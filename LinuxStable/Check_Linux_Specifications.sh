@@ -15,3 +15,6 @@ $cat /proc/meminfo
 
 DISK Memory
 $df -h
+
+#Currnet Linux architecture
+uname -m OR -p

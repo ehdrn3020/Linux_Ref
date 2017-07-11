@@ -1,0 +1,14 @@
+#Setting Language
+
+#Check the status language
+$locale
+
+#Change language of linux environment
+$sudo vi etc/default/locale
+      LANG="en_US.UTF-8"
+
+#Apply
+$source /etc/default/locale
+
+#Check language changed
+$echo $LANG 

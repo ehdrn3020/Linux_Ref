@@ -21,5 +21,17 @@ $ echo 'P@ssw0rd' | passwd --stdin testuser
 # Set group name
 $ useradd userName -G groupName
 
+# Add user to group
+$ gpasswd -a userName groupName
+$ vi /etc/group
+
+# Delete user from group
+$ gpasswd -d userName groupName
+
 # Set UID 
 useradd hostName -u userName
+
+vi 명령어로 /etc/group 파일을 편집하여 직접 등록한다.
+gpasswd 명령어의 -M 명령어로 그룹멤버를 직접 설정한다.
+gpasswd 명령어의 -a 옵션으로 새로운 멤버를 추가 등록한다.
+zezz 사용자를 wheel 그룹에 설정

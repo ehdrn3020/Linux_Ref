@@ -1,0 +1,74 @@
+###Check process memory used###
+
+
+##Check how much use resource
+
+$ free -m // MB
+
+ 
+#Details
+
+$ cat /proc/meminfo
+MemTotal:       16325540 kB // 전체 메모리 크기
+MemFree:         5912216 kB // 사용되지 않고 있는 메모리 크기
+Buffers:          538596 kB // buffer_heads에 사용되는 메모리 크기 (ext* 파일시스템이라면 Buffers는 메모리에 저장되어 있는 메타데이터의 크기)
+Cached:          7945564 kB // 파일 데이터 캐시에 사용되는 메모리 크기
+SwapCached:         3512 kB // 실제 메모리 상에 존재하는 swap 크기
+Active:          4595420 kB // active 메모리 크기
+Inactive:        4537624 kB // inactive 메모리 크기 (메모리 반환시 우선적으로 반환될 대상)
+Active(anon):     471856 kB // active 메모리 중 anonymous pages 크기
+Inactive(anon):   183712 kB // inactive 메모리 중 anonymous pages 크기
+Active(file):    4123564 kB // active 메모리 중 mmaped 할당된 크기
+Inactive(file):  4353912 kB // inactive 메모리 중 mmaped 할당된 크기
+Unevictable:           0 kB // swap out 할 수 없게 고정된 크기. 커널에서 고정시킨 page와 유저공간에서 Mlocked 된 page의 합
+Mlocked:               0 kB // 유저공간에서 Mlocked로 고정된 page 크기
+SwapTotal:       2096476 kB // 전체 swap 크기
+SwapFree:        2063212 kB // swap 공간 중 사용가능한 공간 크기
+Dirty:               316 kB // 페이지캐시 데이터 중 디스크에 쓰여지기 위해 대기 중인 크기
+Writeback:             0 kB // 페이지캐시 데이터 중 현재 디스크에 쓰여지고 있지만 완전히 쓰여지지 않은 크기
+AnonPages:        645448 kB // anonymous page의 전체 크기
+Mapped:            87704 kB // mmaped로 할당된 페이지 크기. ex) 라이브러리 파일
+Shmem:              6684 kB // shared memory 크기
+Slab:            1071668 kB // 커널에 의해 할당된 크기
+SReclaimable:    1018168 kB // 커널에 의해 할당된 것 중 반환가능 한 크기
+SUnreclaim:        53500 kB // 커널에 의해 할당된 것 중 반환불가능한 크기
+KernelStack:        3160 kB // 커널 stack에 할당된 크기
+PageTables:        21876 kB // 시스템의 모든 페이지를 기록하기 위한 메모리 크기
+NFS_Unstable:          0 kB // NFS 페이지 중 서버에 전송되었으나 storage에 커밋되지 않은 크기
+Bounce:                0 kB // 블록 디바이스의 Bounce buffer 크기
+WritebackTmp:          0 kB // FUSE에서 사용되는 writeback 크기
+CommitLimit:    10259244 kB // 현재 시스템에 할당할 수 있는 메모리 사이즈
+Committed_AS:    2779732 kB // 현재 시스템에 할당되어 있는 메모리 사이즈
+VmallocTotal:   34359738367 kB // vmalloc으로 할당할 수 있는 전체 사이즈
+VmallocUsed:      303652 kB    // vmalloc으로 할당된 사이즈
+VmallocChunk:   34359376640 kB // vmalloc으로 할당할 수 있는 가장 큰 연속된 블록의 크기
+HardwareCorrupted:     0 kB    // ???
+AnonHugePages:    454656 kB    // 유저 공간 페이지 테이블에 anonymous huge page로 할당된 크기
+HugePages_Total:       0       // hugepages 관련 정보들
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:        7680 kB // direct mapping 사이즈
+DirectMap2M:    16760832 kB
+
+
+
+##Check the momory used by Process //프로세스가 사용하는 메모리 확인.
+
+$ cat /proc/15267(PID NUMBER)/status
+.
+.
+VmPeak:   555952 kB // 최대할당 가상 메모리 사이즈
+VmSize:   552112 kB // 가상 메모리 사이즈
+VmLck:         0 kB // swap out 할 수 없게 고정된 메모리 사이즈
+VmHWM:     16480 kB // 최대할당 물리 메모리 사이즈
+VmRSS:     13300 kB // 물리 메모리 사이즈
+VmData:    83436 kB // heap 영역 사이즈
+VmStk:        88 kB // stack 영역 사이즈
+VmExe:       416 kB // 실행코드 영역 사이즈
+VmLib:     30708 kB // shared library 영역 사이즈
+VmPTE:       488 kB // page table 사이즈
+VmSwap:      232 kB // swap 사이즈
+.
+.

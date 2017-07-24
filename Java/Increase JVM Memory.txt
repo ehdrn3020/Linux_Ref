@@ -1,0 +1,14 @@
+﻿###Increase Jvm memory in Linux
+
+#Check the JVM default allocated memory
+java -XX:+PrintFlagsFinal -version 2>&1 | grep -i -E 'heapsize|permsize|version'
+
+#Apply
+java.lang.OutOfMemoryErrorPyRaisable: java.lang.OutOfMemoryError: Java heap space
+$> java -jar -Xms512M -Xmx1024M className.jar
+[-Xms] : minimum
+[-Xmx] : maximum
+
+[permanently]
+$vi /etc/profile
+export JAVA_OPTIONS=-Xmx16m

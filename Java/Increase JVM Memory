@@ -1,14 +1,27 @@
 ﻿###Increase Jvm memory in Linux
 
+
 #Check the JVM default allocated memory
 java -XX:+PrintFlagsFinal -version 2>&1 | grep -i -E 'heapsize|permsize|version'
 
-#Apply
+
+#Increase Heap Memory of JVM
 java.lang.OutOfMemoryErrorPyRaisable: java.lang.OutOfMemoryError: Java heap space
-$> java -jar -Xms512M -Xmx1024M className.jar
+
+$ java -jar -Xms512M -Xmx1024M className.jar
 [-Xms] : minimum
 [-Xmx] : maximum
 
 [permanently]
 $vi /etc/profile
 export JAVA_OPTIONS=-Xmx16m
+
+
+#Turn CG Exception off
+#some reason the garbage collector is taking an excessive amount of time (by default 98% of all CPU time of the process) 
+ and recovers very little memory in each run (by default 2% of the heap).
+ This effectively means that your program stops doing any progress and is busy running only the garbage collection at all time.
+ To prevent your application from soaking up CPU time without getting anything done, 
+ the JVM throws this Error so that you have a chance of diagnosing the problem.
+
+$[-XX:-UseGCOverheadLimit]

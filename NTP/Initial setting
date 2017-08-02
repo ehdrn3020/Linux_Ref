@@ -1,0 +1,24 @@
+##Ubuntu##
+
+#Install
+$ sudo apt-get install ntp
+
+#Configuration
+$ sudo vi /etc/ntp.conf
+  server 1.kr.pool.ntp.org
+  server 1.asia.pool.ntp.org
+  server time.bora.net
+
+#Restart
+$ sudo service ntp restart
+
+#Confirm Time Synchronization
+$ sudo ntpq -p
+   * 는 현재 sync 를 받고 있음을 의미
+   + 는 ntp 알고리즘에 의해 접속은 가능하지만 sync 를 하고 있지는 않음을 의미
+   - 는 ntp 알고리즘에 의해 접속은 가능하지만 sync 가능 리스트에서 제외
+   blank는 접속이 불가능함을 의미
+
+#Port
+udp 123
+

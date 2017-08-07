@@ -1,0 +1,31 @@
+####[netstat]####
+
+# Check all opened port
+# 열려 있는 모든 포트를 표시하기
+$ netstat -nap
+
+n:host명으로 표시 안함
+a:모든소켓 표시
+p:프로세스ID와 프로그램명 표시
+
+
+# Filtering LISTEN
+# LISTEN중인 포트를 표시하기
+
+$ netstat -nap | grep LISTEN
+
+
+
+####[ping]####
+
+ping option
+
+-s : ping test시 패킷 사이즈 설정옵션이고 byte 단위로 지정이 가능하고, 기본값은 56byte입니다.
+-q : ping test 과정을 보여주지 않고 결과만을 보여주는 옵션입니다.
+-i : ping test시 사용할 interval값을 설정하는 옵션입니다. 
+     즉, 지연시간을 의미합니다. 기본값은 1초입니다.
+-b : ping test시 broadcast하는 옵션
+-c : ping test시 보낼  패킷수를 지정하는 옵션입니다. 즉. ping test 할 횟수를 지정하는 옵션이죠.
+-w : ping test를 몇 초후에 중지시킬 것인지 지정하는 옵션입니다.
+
+ex ) # ping -c 5 -s 56 IP address

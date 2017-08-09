@@ -1,0 +1,40 @@
+#####DATE######
+
+[Format]
+date +Format
+or
+date +"%Format"
+or
+date +"%Format%Format"
+or
+date +"%Format-%Format"
+
+- %Y 2017 
+- %y 17
+- %m 08
+- %d 09
+
+
+[Ago Date]
+# get date 1day ago
+date +%Y%m%d -d  '-1days'
+
+
+[Ex]
+#/bin/sh
+echo "data now : $(date +%Y%m%d) "
+echo "$(date +%Y)year $(date +%m)month $(date +%d)day"
+if [ "$(date +%d)" -eq 9 ];then
+ echo "9 day"
+else
+ echo "another day"
+fi
+
+$
+data now : 20170809
+2017year 08month 09day
+9 day
+
+
+
+

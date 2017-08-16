@@ -10,6 +10,9 @@ $cat /proc/version
 CPU Info
 $cat /proc/cpuinfo
 
+#Count of CPU Core
+$grep -c processor /proc/cpuinfo 
+
 RAM Memory
 $cat /proc/meminfo
 

@@ -1,0 +1,45 @@
+
+###Read line from file###
+
+$ cat test.sh
+#!/bin/bash
+while read line
+do
+        echo "Line is : $line"
+done < file
+
+#On running the above script:
+$ ./test.sh
+Line is : Solaris Sun 25
+Line is : Linux RedHat 30
+
+
+
+###Read every line into individual fields using the while loop###
+
+$ cat test.sh
+#!/bin/bash
+while read f1 f2 f3
+do
+        echo "OS is     : $f1"
+        echo "Company is: $f2"
+        echo "Value is  : $f3"
+done < file
+
+#On running the above script:
+$ ./test.sh
+OS is     : Solaris
+Company is: Sun
+Value is  : 25
+OS is     : Linux
+Company is: RedHat
+Value is  : 30
+
+
+
+More example is from 
+http://www.theunixschool.com/2012/05/shell-read-text-or-csv-file-and-extract.html
+
+
+
+

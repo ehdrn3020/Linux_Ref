@@ -6,3 +6,5 @@ $ fdisk -l /dev/sd*
 #Into the partition mode
 $ fdisk /dev/sdb
 
+#Set the file system
+$ mkfs.ext4 /dev/sdb1

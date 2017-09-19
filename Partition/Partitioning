@@ -1,4 +1,8 @@
 ###Partitioning Linux###
 
+#Find disk
+$ fdisk -l /dev/sd*
+
 #Into the partition mode
 $ fdisk /dev/sdb
+

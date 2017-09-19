@@ -1,0 +1,4 @@
+###Partitioning Linux###
+
+#Into the partition mode
+$ fdisk /dev/sdb

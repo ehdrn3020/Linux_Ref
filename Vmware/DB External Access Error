@@ -1,0 +1,12 @@
+###
+#Simple setup makes it possible to gain access to the database from external sources.
+
+mysql> grant all privileges on *.* to 'ubuntu1'@'%' identified by 'password';
+mysql> flush privileges;
+
+$ cd /etc/mysql/mysql.conf.d
+$ sudo vi mysqld.cnf
+
+Input '#' infront of 'bind-address = 127.0.0.1'
+$ sudo /etc/init.d/mysql restart
+

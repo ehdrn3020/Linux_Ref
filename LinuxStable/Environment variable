@@ -1,0 +1,23 @@
+
+## 환경변수를 command line으로 현재 터미널에만 적용하는 방법
+$ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
+#check
+$ echo JAVA_HOME
+      
+
+
+## 환경변수를 앞으로 계속 적용하는 방법
+
+$sudo vi /etc/bash.bashrc  
+  export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/   
+$source /etc/bash.bashrc 
+
+이제부터 누구나 로그인해도 JAVA_HOME이라는 환경변수명을 사용할 수 있습니다.
+
+
+
+#특정 사용자에게만 환경변수를 적용 
+$vi /home/userName/.bashrc  
+   맨 마지막에 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
+$source /home/userName/.bashrc
+

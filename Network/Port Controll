@@ -1,0 +1,38 @@
+Ubuntu iptables 방화벽 port 설정하기
+
+Ubuntu에서 iptables를 사용하여 방화벽 port를 설정하는 방법입니다.
+Ubuntu는 ufw를 사용하여 기본 방화벽을 설정해줄 수 있는데 수준 높은 방화벽 구성을 위해서는 iptables를 사용하여 설정해주어야 합니다.
+각각의 경우에 따른 사용방법을 알아보겠습니다.
+
+1. 모든 포트 차단하기
+
+Ubuntu 리눅스는 0번부터 65535번까지 포트를 사용할 수 있는데 아래 명령어를 실행할 경우 모든 포트를 차단할 수 있습니다.
+
+$ sudo iptables -A INPUT -p tcp --dport 0:65535 -j DROP (TCP 포트 대상)
+$ sudo iptables -A INPUT -p udp --dport 0:65535 -j DROP (UDP 포트 대상)
+
+2. 특정 포트만 열어주기
+
+다음은 tcp 80번 포트를 열어주는 명령어입니다.
+
+$ sudo iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+$ sudo iptables -I OUTPUT -p tcp --sport 80 -j ACCEPT
+
+3. 특정 IP에 특정 포트만 열어주기
+
+다음은 111.222.333.444 IP에 tcp 80번 포트를 열어주는 명령어입니다. 
+
+$ sudo iptables -I INPUT -p tcp --dport 80 -s 111.222.333.444 -j ACCEPT
+$ sudo iptables -I OUTPUT -p tcp --dport 80 -d 111.222.333.444 -j ACCEPT
+
+4. TCP 8080번 포트를 80번 포트로 REDIRECT 하기
+
+※ Ubuntu 16.04 버전의 경우 기본 네트워크 인터페이스명이 eth0가 아니라 ens33 또는 eno1으로 되어있는 경우가 있습니다.
+이런 경우엔 아래 명령어에서 eth0를 맞는 인터페이스명으로 바꿔서 실행해주시면 됩니다.
+
+$ sudo iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT
+$ sudo iptables -A INPUT -i eth0 -p tcp --dport 8080 -j ACCEPT
+$ sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+
+
+출처: http://freestrokes.tistory.com/entry/Ubuntu-iptables로-방화벽-port-설정하기 [FREESTROKES' Develog]

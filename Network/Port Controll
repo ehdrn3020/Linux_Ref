@@ -36,3 +36,4 @@ $ sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-
 
 
 출처: http://freestrokes.tistory.com/entry/Ubuntu-iptables로-방화벽-port-설정하기 [FREESTROKES' Develog]
+참고: https://help.ubuntu.com/community/IptablesHowTo

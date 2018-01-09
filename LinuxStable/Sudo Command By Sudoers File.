@@ -1,0 +1,16 @@
+#Error log : 
+userid is not in the sudoers file. This incident will be reported
+
+# 암호를 물어보는 것까지는 정상적, "userid is not in the sudoers file. This incident will be reported."라는 오류메시지. 
+  root권한을 획득하는 것을 실패. 해당 유저명이 sudoers파일에 없다고 합니다.
+
+# sudoers파일은 sudo명령어에 대한 설정을 다루는 파일, 이곳에 sudo명령어를 사용할 수 있는 계정을 지정함. 
+  그 외에도 여러가지 설정에 대한 부분이 있으며 /etc/sudoers 에 위치. 
+
+# 기본으로 지정된 내용을 보면 root   ALL=(ALL) ALL 이라는 부분이 있는데 이 설정이 root 유저가 sudo명령어를 사용할 수 있도록 하는 부분
+  새로운 유저아이디를 추가함
+  
+# sudoers파일은 visudo -f /etc/sudoers 명령어를 사용하면 vi와는 다른 형태의 에디터가 열리고 여기서 수정함.
+  (vi를 통해서 접근하면 읽기전용파일.) 
+  수정후에 저장할때 sudoers 설정에 대한 문법까지 체크해주어 혹시 모를 문제를 위해서 visudo를 이용해서 파일을 수정.
+  

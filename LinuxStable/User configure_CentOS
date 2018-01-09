@@ -1,0 +1,23 @@
+###1. ADD USER###
+
+useradd [opt] userName
+
+-d : 홈디렉토리를 지정
+-g : 그룹을 지정해서 사용자를 생성한다. 해당그룹이 존재하는 상태에만 가능
+-G : 기본그룹이외에 추가로 지정그룹에 속하게 한다.
+-c : 사용자에 대한 설명을 추가한다.
+-s : 사용자 쉘을 지정하여 생성
+-D : /etc/default/useradd에 설정된 유저추가에 대한 기본설정을 보여준다.
+
+#ex
+$ useradd centos
+
+
+
+###2. ADD USER TO GROUP###
+
+$ groupadd grouptest1
+$ useradd -g grouptest1 centos
+
+
+Ref : http://naompine.blogspot.kr/2015/07/8-centos.html

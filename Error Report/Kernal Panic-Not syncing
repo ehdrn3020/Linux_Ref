@@ -1,0 +1,15 @@
+##Error Mesege##
+Kernal Panic - Not syncing : VFS: unable to mount root fs on unknown-block (0,0)
+
+yum update 중 뭔가가 잘못 되어서 kernel이 꼬인 것
+
+
+##solution##
+1. kernel selection in booting
+the one at the top is the recently updated kernel and other is below.
+choose old one.
+
+2. delete wrong kernel
+$ rpm -qa | grep kernel
+$ yum remove -y kernel-2.6.32-696.3.3.el6.x86_64 (wrong update kernel)
+$ yum update -y 

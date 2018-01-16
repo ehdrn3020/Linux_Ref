@@ -18,6 +18,6 @@ $ useradd centos
 
 $ groupadd grouptest1
 $ useradd -g grouptest1 centos
-
+$ passwd centos
 
 Ref : http://naompine.blogspot.kr/2015/07/8-centos.html

@@ -1,0 +1,15 @@
+###insall JAVA###
+
+root@centos ~]# yum list java*jdk-devel
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+Available Packages
+java-1.6.0-openjdk-devel.x86_64             1:1.6.0.40-1.13.12.6.el6_8              updates
+java-1.7.0-openjdk-devel.x86_64             1:1.7.0.111-2.6.7.2.el6_8               updates
+java-1.8.0-openjdk-devel.x86_64             1:1.8.0.101-3.b13.el6_8                 updates
+
+
+root@centos ~]# yum install java-1.8.0-openjdk-devel.x86_64
+
+
+

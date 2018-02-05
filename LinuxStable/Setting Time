@@ -1,0 +1,18 @@
+#check now date
+$ date
+Mon Feb  5 13:56:48 KST 2018
+
+#Synchronize korea time
+$ rdate -s time.bora.net
+
+#Ref korea Time Server
+1. NTP Primary Time Server(Stratum 1  Server)
+   - time2.kriss.re.kr
+   - time.bora.net
+   - ntp.kornet.net
+   - ntp.postech.ac.kr
+  
+2. NTP Secondary Time Server(Stratum 2 Server)
+   - ntp.ewha.net
+   - ticktock.ewha.net
+   - time.bora.net

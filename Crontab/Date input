@@ -1,0 +1,10 @@
+
+$ echo $(date +%Y-%m)
+2018-02
+->실제 명령어로는 잘 되는데 crontab에서는 안되는 이유
+
+crontab에서 % 문자는 개행을 의미하는 문자로
+따라서 % 문자를 이용하기 위해 앞에 \(escape)이 문자삽입
+
+$ crontab -e
+*/30 * * * * /root/scrapy/project/run_sh > /log/$(date +\%Y-\%m)/index_$(date +\%d-\%H\%M).log 2>&1

@@ -1,0 +1,85 @@
+###tar 기능 및 옵션 정리###
+tar - GNU 버전 tar 저장 도우미
+이 설명서는 tarfile 이라고 알려진 저장 파일을 묶거나 풀 수 있도록 만들어 진GNU 버전 tar 저장 프로그램에 대한 설명이다. 
+tarfile 은 테이프 드라이브에 저장할 수도 있고, tarfile 을 일반적인 보통 파일로 쓸 수도 있다. 
+tar 의 첫 번째 인수로는 반드시 Acdrtux 중 하나의 옵션이 들어가야 하고, 다른 선택적인 기능이 덧붙여진다. 
+tar 의 마지막 인수로는 압축될 파일이나 디렉토리의 이름이 오게 된다. 디렉토리 이름이 사용될 경우 언제나 하위 디렉토리가 함께 저장된다. 
+
+가장 많이 사용하는 일반적인 옵션
+[압축할 때] tar cvzf 파일명.tar.gz <디렉토리> 또는 파일 
+[압축 해제] tar xvzf 파일명.tar.gz 
+
+
+[예제] 
+tar -xvvf foo.tar : foo.tar 파일을 푼다.
+tar -xvvzf foo.tar.gz : gzip으로 압축된 foo.tar.gz 파일을 푼다. 
+tar -cvvf foo.tar foo/ : foo 디렉토리에 있는 내용물을 foo.tar 파일로 묶는다.
+
+
+기능 옵션
+반드시 아래 옵션들 중 하나가 들어가야 한다. 
+-A, --catenate, --concatenate : 저장 파일에 tar 파일을 추가한다.
+-c, --create : 새 저장 파일을 만든다. 
+-d, --diff, --compare : 저장 파일 혹은 파일 시스템 간의 다른 점을 찾는다. 
+--delete : 저장 파일에서 지운다. (자기 테이프에는 쓰면 안됨!)
+-r, --append : 저장 파일의 끝에 파일을 덧붙인다. 
+-t, --list : 저장 파일의 내용 목록을 보여준다.
+-u, --update : 저장 파일에 저장된 사본보다 새로운 파일만을 덧붙인다. 
+-x, --extract, --get : 저장된 것에서 풀어낸다. 
+
+
+부가적인 옵션
+--atime-preserve : 덤프된 파일의 접근 시간을 바꾸지 않는다. 
+-b, --block-size N : 블럭 크기를 N x 512 바이트로 정한다. (기본값 N = 20) 
+-B, --read-full-blocks : 읽은 만큼 블럭을 재지정한다. (4.2BSD 파이프를 읽기 위함) 
+-C, --directory DIR : DIR 디렉토리로 바꾸고 작업을 한다.
+--checkpoint : 저장 파일을 읽는 동안 디렉토리 이름을 출력한다. 
+-f, --file [HOSTNAME:]F : 저장 파일 혹은 장치 파일 F에 저장한다.
+(기본 "-", 표준입/출력을 나타낸다.) 
+--force-local : colon 문자가 있더라도 저장 파일을 지역 파일로 처리한다. 
+-F, --info-script F --new-volume-script F : run script at end of each tape (implies -M) 테이프의 끝에 도달하면 스크립트를 실행한다. (-M 이 포함된다.)
+-G, --incremental : 이전 GNU 형식으로 incremental 백업을 만들거나 목록을 보거나 풀어낸다. 
+-g, --listed-incremental F : 새로운 GNU 형식으로 incremental 백업을 만들거나 목록을 보거나 풀어낸다.
+-h, --dereference : 심볼릭 링크를 묶지 않는다. 그것이 가리키는 파일을 묶는다. 
+-i, --ignore-zeros : 크기가 0인 것은 무시한다. (보통 EOF를 의미한다.)
+-j, --bzip2 : bzip2 필터를 사용하여 .bz2 파일을 푼다. 
+--ignore-failed-read : 읽을 수 없는 파일이 있더라도 종료 코드 0을 출력하지 않는다. 
+-k, --keep-old-files : 기존에 있는 파일을 유지한다. 파일이 있으면 덮어쓰지 않는다.
+-K, --starting-file F : 저장 파일에 있는 파일 F에서부터 시작한다. 
+-l, --one-file-system : 저장 파일을 만들 때 로컬 파일 시스템 안의 놓는다. 
+-L, --tape-length N : N * 1024 바이트를 쓴 다음 테이프를 바꾼다.
+-m, --modification-time : 파일의 변경 시간 정보를 유지하지 않는다.
+-M, --multi-volume : 여러 개로 나눠진 저장 파일로 만들거나 목록을 보거나 풀어낸다.
+-N, --after-date DATE, --newer DATE : 주어진 DATE 보다 새로운 파일만 저장한다.
+-o, --old-archive, --portability : ANSI 형식 대신 V7 형식으로 저장한다. 
+-O, --to-stdout : 표준 출력으로 파일들을 풀어낸다. 
+-p, --same-permissions, --preserve-permissions : 모든 퍼미션 정보를 유지한다. 
+-P, --absolute-paths : 파일 이름의 맨 앞 `/' 문자를 버리지 않는다.
+--preserve : -p 옵션과 -s 옵션을 함께 사용한 것과 같다.
+-R, --record-number : 저장 파일의 레코드 번호를 각각의 메시지로 보여준다.
+--remove-files : 파일을 저장 파일에 덧붙인 다음 파일을 지운다.
+-s, --same-order, --preserve-order : 저장 파일 목록과 똑같은 순서로 풀어낸다.
+--same-owner : 같은 사용자 소유권으로 파일들을 풀어낸다. 
+--numeric-owner : user/group 이름으로 항상 숫자를 사용한다. 
+-S, --sparse : 듬성한 파일을 효율적으로 다룬다. 
+-T, --files-from F : 파일 F에서 목록을 읽어 추출하거나 만든다.
+--null : -T reads null-terminated names, disable -C -C를 비활성화하고, -T로 읽을 때 null로 끝 나는 이름을 읽는다.
+--totals : --create로 만들어진 바이트 총합을 출력한다.
+-v, --verbose : 처리중인 파일을 자세하게 보여준다.
+-V, --label NAME : 저장 파일의 볼륨 이름을 NAME으로 한다. 
+--version : tar 프로그램의 버전 정보를 출력한다.
+-w, --interactive, --confirmation : 각각을 처리할 때 마다 물어본다.
+-W, --verify : attempt to verify the archive after writing it 저장 파일을 쓴 후에 저장 파일을 점검한다.
+--exclude=FILE : FILE을 제외한다.
+-X, --exclude-from FILE : FILE 목록에 있는 것을 제외한다. 
+-Z, --compress, --uncompress 
+compress로 압축하거나 푼다. 
+-z, --gzip, --ungzip : gzip으로 압축하거나 푼다. 
+--use-compress-program PROG : PROG로 저장 파일을 다시 처리한다. (PROG은 반드시 -d를 처리해야 한다.)
+--block-compress : 테이프에 저장할 때 압축 프로그램의 출력을 막는다. 
+--rsh-command=CMD : `rsh' 대신 원격 COMMAND를 사용한다. 이 옵션은 표준 `rsh' 대신 원격 장치에 접근 할 수 있는 다른 것(예를 들어, Kerberized `rsh')을 사용하는 사람들을 위해 필요하다.
+-[0-7][lmh] : 드라이브와 밀도를 지정한다.
+
+
+
+Ref: http://lily.mmu.ac.kr/lecture/08sm/Ubuntu2/8tar.html

@@ -1,0 +1,15 @@
+#방화벽문제일시 방화벽해제 후 서비스 실행
+$ service iptables stop
+
+#서비스가 실행되면 해당포트를 방화벽 LISTEN이 되게하는 작업진행
+$ iptables -I INPUT 1 -p tcp --dport 3306 -j ACCEPT
+$ service iptables save
+iptables: 방화벽 규칙을 /etc/sysconfig/iptables에 저장 중: [ OK ]
+
+#설정파일에서적용확인
+$ vi /etc/sysconfig/iptables
+
+#서비스 재가동
+$ service iptables restart
+$ iptables -L
+

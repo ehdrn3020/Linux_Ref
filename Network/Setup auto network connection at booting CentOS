@@ -1,6 +1,7 @@
 #su - root 
 #vi /etc/sysconfig/network-scripts/ifcfg-eth0
 
+Ex1]
 DEVICE=eth0
 TYPE=Ethernet
 UUID=f0ae726e-411a-47a5-a57f-cedb1aa2862d
@@ -15,3 +16,14 @@ IPV4_FAILURE_FATAL=yes
 IPV6INIT=no
 NAME="System eth0"
 
+Ex2]
+DEVICE=eth0
+HWADDR=00:0C:29:45:5C:DE
+TYPE=Ethernet
+UUID=9f7937c8-08ed-467b-89d0-78b6370e7a88
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=dhcp
+
+#/etc/init.d/network restart
+#ping 8.8.8.8

@@ -1,0 +1,20 @@
+8080 port 를 연다고 가정하면, 
+
+1. root 로 switch user
+    [user@test ~]$ su -
+    암호:
+    [root@test ~]#
+
+2. /etc/sysconfig/iptables 파일 열기 & 수정
+    [root@test ~]# vi /etc/sysconfig/iptables
+
+    열고자 하는 포트를 아래 라인과 같이 추가. (8080 포트 열기)
+    -A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
+
+3. iptables restart - 아래 명령 사용.
+    [root@test ~]# service iptables restart
+    또는
+    [root@test ~]# /etc/init.d/iptables restart
+
+
+출처: http://ann-moon.tistory.com/99 [Ann's IT World]

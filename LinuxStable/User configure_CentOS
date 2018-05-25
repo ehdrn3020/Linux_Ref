@@ -10,8 +10,9 @@ useradd [opt] userName
 -D : /etc/default/useradd에 설정된 유저추가에 대한 기본설정을 보여준다.
 
 #ex
-$ useradd centos
-
+$ useradd centos                    //생성
+$ cat /etc/passwd | grep centos     //확인
+$ echo 'your password' | passwd --stdin testuser    //비번설정
 
 
 ###2. ADD USER TO GROUP###

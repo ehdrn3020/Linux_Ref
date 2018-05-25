@@ -1,0 +1,221 @@
+IPMI를 활용한 리눅스 서버관리
+작성자:김경민 (stone@linuxstudy.pe.kr)
+
+
+
+참조 URl : http://coffeenix.net/board_print.php?bd_code=1765
+    IPMI 유저정보변경 : https://chonnom.com/bbs/board.php?bo_table=B19&wr_id=169
+    
+
+1 IPMI
+2 IPMI를 활용한 리눅스 서버관리
+3 작성자:김경민 (stone@linuxstudy.pe.kr)
+3.1 IPMI(Intelligent Platform Management Interface)
+3.1.1 소개
+3.1.2 요구사항
+3.2 ipmi tool 설치 및 설정
+3.2.1 소스로 설치하기
+3.2.2 CentOS의 yum을 이용한 설치
+3.2.3 Gentoo의 emerge를 이용한 설치
+3.2.4 테스트
+3.3 ipmitool 간단 설명
+3.4 사용 예제
+3.5 마치며
+
+3.1 IPMI(Intelligent Platform Management Interface)
+
+3.1.1 소개
+* IPMI란 서버 관리를 위한 관리 인터페이스로 원격지나 로컬서버의 상태를 파악하고 제어할 수 있는 기능을 제공한다. 따라서 많은 수의 서버를 관리하는 경우에 아주 유용하게 사용이 될 수 있다.
+요즘 나오는 대부분의 서버용 메인보드에서는 지원하는 기능이다.
+
+3.1.2 요구사항
+IPMI version 1.5이상을 지원하는 메인보드
+OpenIPMI
+IPMI드라이버를 제공하는 커널(요즘 나오는 대부분의 배포판은 IPMI 드라이버를 지원한다.)
+
+3.2 ipmi tool 설치 및 설정
+OpenIPMI 에서 제공하는 ipmitool이나
+ipmitool 에서 제공하는 ipmitool이나
+아무거나 사용해도 무방하다. 입맛에 맞는대로 설치해서 쓰도록 합니다.
+
+3.2.1 소스로 설치하기
+ipmitool 에서 소스를 다운로드 받는다.
+압축을 해제하고 ./configure;make;make install
+
+3.2.2 CentOS의 yum을 이용한 설치
+yum -y install OpenIPMI-tools
+
+3.2.3 Gentoo의 emerge를 이용한 설치
+emerge ipmitool
+
+3.2.4 테스트
+먼저 ipmitool을 실행 해 본다.
+[root@mail ~]# ipmitool
+No command provided!
+Commands:
+        raw           Send a RAW IPMI request and print response
+        i2c           Send an I2C Master Write-Read command and print response
+        spd           Print SPD info from remote I2C device
+        lan           Configure LAN Channels
+        chassis       Get chassis status and set power state
+        power         Shortcut to chassis power commands
+        event         Send pre-defined events to MC
+        mc            Management Controller status and global enables
+        sdr           Print Sensor Data Repository entries and readings
+        sensor        Print detailed sensor information
+        fru           Print built-in FRU and scan SDR for FRU locators
+        sel           Print System Event Log (SEL)
+        pef           Configure Platform Event Filtering (PEF)
+        sol           Configure and connect IPMIv2.0 Serial-over-LAN
+        tsol          Configure and connect with Tyan IPMIv1.5 Serial-over-LAN
+        isol          Configure IPMIv1.5 Serial-over-LAN
+        user          Configure Management Controller users
+        channel       Configure Management Controller channels
+        session       Print session information
+        sunoem        OEM Commands for Sun servers
+        kontronoem    OEM Commands for Kontron devices
+        picmg         Run a PICMG/ATCA extended cmd
+        fwum          Update IPMC using Kontron OEM Firmware Update Manager
+        firewall      Configure Firmware Firewall
+        shell         Launch interactive IPMI shell
+        exec          Run list of commands from file
+        set           Set runtime variable for shell and exec
+        hpm           Update HPM components using PICMG HPM.1 file
+
+[root@mail ~]#
+이런식의 메시지가 정상적으로 출력이 된다면 ipmitool 을 실행할 수 있는 환경이 된것이다.
+만약 /dev/ipmi0 또는 /dev/ipmi/0 을 못찾는다는 에러가 나온다면 다음을 확인 하도록 하자.
+커널에 ipmi관련 모듈이 올라와 있는지 확인
+[root@mail ~]# lsmod|grep ipmi
+ipmi_devintf           13257  0
+ipmi_si                42445  0
+ipmi_msghandler        38001  2 ipmi_devintf,ipmi_si
+[root@mail ~]#
+올라와 있는데 장치가 없다면 수동으로 만들어 준다.
+수동으로 만들어 주는 방법은 cat /proc/devices|grep ipmidev 해서 나오는 번호로
+장치를 만들어 주면 된다.
+mknod /dev/ipmi0 c 254(위에서 나온 번호) 0
+다시 ipmitool을 실행하면 에러가 나오지 않을 것이다.
+
+3.3 ipmitool 간단 설명
+워낙 많은 명령과 옵션이 있으므로 간단하게 많이 쓰일 수 있는 명령들만 설명한다.
+나머지는 본인들이 직접 해보면서 테스트 해보도록 하자.
+
+사용법.
+ipmitool 옵션 명령
+옵션.
+-I intf        Interface to use(어떤 인터페이스를 통해서 서버에 접속할 것인지다. 인터페이스의 종류는 open,imb,lan,lanplus 를 제공하고 있으며
+open은 리눅스의 OpenIPMI 인터페이스를 사용하겠다는 것이며 imb는 Intel IMB interface,lan 은 IPMI v1.5 Lan interface, lanplus는 IPMI v2.0 interface 다)
+-H hostname    Remote host name for LAN interface(원격지의 서버의 상태나 제어를 할때 적어준다)
+-p port        Remote RMCP port [default=623]
+-U username    Remote session username(원격지에 접속할때 사용하는 유저명)
+
+Command. 많은 command 가 있지만 일반적으로 사용하는 명령을 위주로 설명하겠다.
+lan           lan 채널에 대한 설정을 할수 있다.
+chassis       새시(보통 케이스와 파워) 상태와 전원을 관리할 수 있다.
+power         새시 명령의 단축 명령이다.
+sdr           Print Sensor Data Repository entries and readings(메인보드에 있는 센서와 데이터를 읽어 들일때 사용한다.
+sensor        좀더 정확한 센서 정보를 제공해 준다.
+fru           Print built-in FRU and scan SDR for FRU locators(Fiele replace unit의 약자인데 보통 메모리 정보나 메인보드 정보를 제공해 준다.)
+sel           Print System Event Log (SEL)(시스템 event 로그를 보여준다.보통 서버가 하드웨어적으로 문제가 발생하면 발생하는데 하드웨어 점검할때 유용하게 쓰일 수 있다.)
+sol           Serial-over-LAN 설정
+isol          IPMIv1.5 Serial-over-LAN 설정
+user          유저 설정(원격에서 접속할 수 있는 유저를 생성하거나 권한을 부여한다.)
+channel       채널 설정(각가의 채널별로 접속하는 방식들이 차이가 난다. 예를 들면 1번 채널은 serial 접속,2번채널은 lan 접속등등)
+
+3.4 사용 예제
+
+ipmitool -I open(또는 원격서버를 컨트롤 하고자 한다면 lan) 명령
+
+서버 파워 상태 및 제어
+ [root@mail ~]# ipmitool -I open chassis       
+Chassis Commands:  status, power, identify, policy, restart_cause, poh, bootdev, bootparam, selftest
+
+[root@mail ~]#
+
+ex) 서버 전원 상태 보기
+[root@mail ~]# ipmitool -I open chassis status
+System Power         : on
+Power Overload       : false
+Power Interlock      : inactive
+Main Power Fault     : false
+Power Control Fault  : false
+Power Restore Policy : previous
+Last Power Event     : ac-failed
+Chassis Intrusion    : inactive
+Front-Panel Lockout  : inactive
+Drive Fault          : false
+Cooling/Fan Fault    : false
+
+ex) 서버 파워 컨트롤( lan interface 를 이용한다면 리모트 서버가 다운이 되어있다면 reset,power on, power off등등을 실행할 수 있게 된다.
+즉 서버가 다운되어 있더라도 ipmitool을 이용하면 전원을 다시 인가할 수 있게 된다. 굳이 서버까지 가서 전원 스위치나 리셋 스위치를 누를 필요가 없게 되는것이다.  )
+주의. power off 명령은 아주 조심히 사용해야 한다 서버가 돌고 있더라도 전원이 내려간다.
+
+[root@mail ~]# ipmitool -I open power  
+chassis power Commands: status, on, off, cycle, reset, diag, soft
+
+[root@mail ~]# ipmitool -I open power status
+Chassis Power is on
+
+[root@mail ~]#
+
+서버 센서 모니터링
+현재 서버에 있는 센서들을 체크해서 이상유무를 파악할 수 있다.
+cpu온도,메인보드 온도,Fan속도,Voltage,메모리 상태등등 보드에 달려있는 센서에 따라서 보여지는 값이 다를 수 있다.
+[root@mail ~]# ipmitool -I open sdr
+Power Unit       | 0x00              | ok
+BMC Watchdog     | 0x00              | ok
+Scrty Violation  | 0x00              | ok
+Physical Scrty   | 0x00              | ok
+POST Error       | 0x00              | ok
+Critical Int     | 0x00              | ok
+Memory           | 0x00              | ok
+Logging Disabled | 0x00              | ok
+Baseboard 1.2V   | 1.21 Volts        | ok
+Baseboard 1.25V  | 1.26 Volts        | ok
+Baseboard 1.8V   | 1.78 Volts        | ok
+Baseboard 1.8VSB | 1.79 Volts        | ok
+Baseboard 2.5V   | 2.52 Volts        | ok
+Baseboard 3.3V   | 3.40 Volts        | ok
+Baseboard 3.3AUX | 3.31 Volts        | ok
+Baseboard 5.0V   | 5.02 Volts        | ok
+Baseboard 5VSB   | 5.05 Volts        | ok
+Baseboard 12V    | 11.97 Volts       | ok
+Baseboard 12VRM  | 12.03 Volts       | ok
+Baseboard -12V   | -12.11 Volts      | ok
+Baseboard VBAT   | 3.18 Volts        | ok
+Baseboard Temp   | 30 degrees C      | ok
+FntPnl Amb Temp  | 21 degrees C      | ok
+Basebrd FanBoost | 30 degrees C      | ok
+FP Amb FanBoost  | 21 degrees C      | ok
+Baseboard Fan 1  | 6681 RPM          | ok
+Baseboard Fan 2  | 7395 RPM          | ok
+Baseboard Fan 3  | 7191 RPM          | ok
+Baseboard Fan 4  | 7191 RPM          | ok
+Baseboard Fan 5  | 7395 RPM          | ok
+------이하 생략--------
+디비서버에서 리스 메인서버의 정보를 보는 예제이다.
+[root@mail ~]# ipmitool -I lan -H ns1 -U stone sdr
+Password:
+Power Unit       | 0x00              | ok
+BMC Watchdog     | 0x00              | ok
+Scrty Violation  | 0x00              | ok
+Physical Scrty   | 0x00              | ok
+POST Error       | 0x00              | ok
+Critical Int     | 0x00              | ok
+Memory           | 0x00              | ok
+Logging Disabled | 0x00              | ok
+Baseboard 1.2V   | 1.20 Volts        | ok
+Baseboard 1.25V  | 1.27 Volts        | ok
+Baseboard 1.8V   | 1.80 Volts        | ok
+------ 이하 생략 ---------------
+
+* 시스템 이벤트 로그 보기
+보통 서버 보드의 경우 시스템에 문제들이 발생하면 event로그를 남기며 그 로그는 바이오스에서 볼수 있다.
+하지만 서버가 운영되고 있는 도중에 로그를 보기 위해서 재부팅을 하는게 어려울 경우 유용하게 사용될 수 있을 것이다.
+
+ipmitool -I open sel list (시스템 이벤트 로그 보기)
+ipmitool -I open sel info (시스템 이벤트 정보 보기, 사용량이나 마지막으로 이벤트 로그 발생시점등등)
+
+ipmitool -I open sel clear (이벤트 로그 지우기)
+ipmitool -I open sel delete 이벤트로그번호(이벤트 지우기)

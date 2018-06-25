@@ -1,0 +1,66 @@
+1. Log file은 apache, mysql, 등 어플리케이션 설정내에서 경로가 지정되어 있기 때문에, 삭제 하게 되면 오류가 발생 하게 됩니다.
+   아래와 같이 /usr 혹은 /var 파티션이 100%가 되는 경우가 상당 수 발생.
+
+   [root@hostway /]# df -Th
+   Filesystem    Type    Size  Used Avail Use% Mounted on
+   /dev/sda1     ext3    1.9G  826M  963M  47% /
+   /dev/sda6     ext3    950M   19M  884M   3% /tmp
+   /dev/sda3     ext3    4.6G  485M  3.9G  11% /var
+   /dev/sda2     ext3    9.2G  9.2G  0G  100% /usr
+   /dev/sda7     ext3     92G   64G   24G  74% /home
+   /dev/sda8     ext3    118G   93G   20G  83% /data
+
+
+
+2. 이 경우 어떤 파일 혹은 디렉토리가 큰 용량을 차지하고 있는지 확인이 필요 합니다.
+
+   방법 1) du 명령을 통해 용량이 큰 디렉토리 및 파일 확인
+   [root@hostway ~]# cd /usr
+   [root@hostway usr]# du -sh *
+   578M    lib
+   55M     libexec
+   7.2G    local
+   16K     lost+found
+   
+   [root@hostway usr]# cd local
+   [root@hostway local]# du -sh *
+   위와 같은 형태로 찾아 찾아 들어가는 형태로 파일이 커진 파일을 확인 할 수 있습니다.
+
+
+   방법 2) find를 이용해 /usr 디렉토리 밑에 200M 이상 파일들 찾는 방법 예시
+   [root@hostway usr]# find /usr -size +200000 -print
+   위 방법들로 파일 사이즈가 큰 것들을 찾을 수 있습니다.
+
+
+ 
+3. 보통 문제가 되는 파일들은 /usr/local/apache2/logs/~~  경로와 같이 웹 로그 파일들이 쌓이는
+   부분에서 문제가 발생 합니다.
+   예를 들어 /usr/local/apache2/logs/access.log 파일의 크기가 3.5G나 되는 경우 로그를 여는데도
+
+   상당 수 시간이 소요되며, 서버의 부하가 발생 합니다.
+   이 경우 로그가 꼭 필요하다면, 여유가 있는 다른 파티션으로 이동 후 비워주는 작업을 해주셔야
+   합니다.
+
+   아래 명령을 수행 하게 되면 null (0) 값으로 access.log를 채우게 되면서 결과적으로는 사이즈가 
+   0이 되어지고 파일은 남아있습니다.
+
+   [root@hostway usr]# cat /dev/null > /usr/local/apache2/logs/access.log   
+   /usr 파티션에는 아래와 같이 3.5G 여유공간이 생깁니다.
+
+   [root@hostway /]# df -Th
+   Filesystem    Type    Size  Used Avail Use% Mounted on
+   /dev/sda1     ext3    1.9G  826M  963M  47% /
+   /dev/sda6     ext3    950M   19M  884M   3% /tmp
+   /dev/sda3     ext3    4.6G  485M  3.9G  11% /var
+   /dev/sda2     ext3    9.2G  5.7G  3.5G  70% /usr
+   /dev/sda7     ext3     92G   64G   24G  74% /home
+   /dev/sda8     ext3    118G   93G   20G  83% /data
+
+   위와 같은 원인이 발생하는 이유는 공간부족으로 인해 데몬이 구동하기 위해 필요한 pid 파일이
+   생성되지 못하기 때문입니다.
+
+
+  - Mysql의 bin log 같은 경우엔 주의가 필요로 합니다.
+    제일 마지막 번호의 log 인 즉 데몬이 쿼리를 쌓고 있는 파일은 비우시면 안됩니다.
+    
+[출처]http://faq.hostway.co.kr/?mid=Linux_ETC&page=8&document_srl=1423
